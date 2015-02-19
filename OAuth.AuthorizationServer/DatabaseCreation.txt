@@ -1,0 +1,22 @@
+﻿
+The following commands run within the package manager console and allow creation of a local
+database in the App_Data folder of the project.
+
+The following command enables migrations and creates a configuration class in the migrations folder...
+
+Enable-Migrations –EnableAutomaticMigrations
+
+The configuration class contains a seed method, which we use to prepopulate data in our database.
+Update this class to seed users with the ASP.NET User Manager:
+
+var manager = new UserManager<OAuthUser>(new UserStore<OAuthUser>(new OAuthDbContext()));
+manager.Create(new OAuthUser { UserName = "rgarrett"}, "Password");
+
+Initialize the migration with the following command:
+
+Add-Migration Init
+
+You should now have an {Number}_Init.cs class, which initializes the ASP.NET table structure etc (scaffolding).
+Now update the database, which will create a new MDF if if it doesn't already exist...
+
+Update-Database
