@@ -25,5 +25,14 @@ namespace OAuth.AuthorizationServer.Models
         }
 
         #endregion Construction
+
+        #region Methods
+
+        internal static OAuthDbContext Create()
+        {
+            return new OAuthDbContext();
+        }
+
+        #endregion Methods
     }
 }

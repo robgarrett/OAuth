@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using OAuth.Constants;
 
 namespace OAuth.AuthorizationServer.Controllers
 {
@@ -14,13 +15,14 @@ namespace OAuth.AuthorizationServer.Controllers
             // See if we can get the credential ticket from our access token
             // assuming we have one.
             var authentication = HttpContext.GetOwinContext().Authentication;
-            var ticket = authentication.AuthenticateAsync("Application").Result;
+            // TODO: Make generic so we can authenticate with which ever authentication type selected by end user.
+            var ticket = authentication.AuthenticateAsync(AuthTypes.DefaultAuthType).Result;
             var identity = ticket != null ? ticket.Identity : null;
             if (identity == null)
             {
                 // No ticket, so challenge user to authenticate with whatever 
                 // authentication type specified.
-                authentication.Challenge("Application");
+                authentication.Challenge(AuthTypes.DefaultAuthType);
                 return new HttpUnauthorizedResult();
             }
 
@@ -40,8 +42,8 @@ namespace OAuth.AuthorizationServer.Controllers
             // If user requested sign in with a different user, then force sign out and challenge
             // user for authentication. Otherwise, we're done with this call.
             if (string.IsNullOrEmpty(Request.Form.Get("submit.Login"))) return View();
-            authentication.SignOut("Application");
-            authentication.Challenge("Application");
+            authentication.SignOut(AuthTypes.DefaultAuthType);
+            authentication.Challenge(AuthTypes.DefaultAuthType);
             return new HttpUnauthorizedResult();
         }
     }

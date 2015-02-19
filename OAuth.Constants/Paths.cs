@@ -25,7 +25,8 @@ namespace OAuth.Constants
 
         public const string AuthorizePath = "/OAuth/Auth";
         public const string TokenPath = "/OAuth/Token";
-        public const string LoginPath = "/Account/Login";
+        //public const string LoginPath = "/Account/Login";
+        public const string LoginPath = "/signin-dummy";
         public const string LogoutPath = "/Account/Logout";
         public const string MePath = "/api/Me"; 
     }

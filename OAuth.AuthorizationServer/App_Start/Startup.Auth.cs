@@ -4,11 +4,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Infrastructure;
 using Microsoft.Owin.Security.OAuth;
+using OAuth.AuthorizationServer.Middleware;
+using OAuth.AuthorizationServer.Models;
 using OAuth.Constants;
 using Owin;
 
@@ -25,10 +28,13 @@ namespace OAuth.AuthorizationServer
 
         public void ConfigureAuth(IAppBuilder app)
         {
+            // Enable ASP.NET User Manager and DBContext objects in the OWIN context.
+            app.CreatePerOwinContext(OAuthDbContext.Create);
+            app.CreatePerOwinContext<OAuthUserManager>(OAuthUserManager.Create);
             // Enable Application Sign In Cookie 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                AuthenticationType = "Application",
+                AuthenticationType = AuthTypes.FormsAuthType,
                 AuthenticationMode = AuthenticationMode.Passive,
                 LoginPath = new PathString(Paths.LoginPath),
                 LogoutPath = new PathString(Paths.LogoutPath),
@@ -64,6 +70,9 @@ namespace OAuth.AuthorizationServer
                     OnReceive = ReceiveRefreshToken,
                 }
             });
+
+            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            app.UseDummyAuthentication(new DummyAuthenticationOptions("rgarrett") { AuthenticationType = AuthTypes.DefaultAuthType });
         }
 
         /// <summary>
