@@ -9,7 +9,7 @@ namespace OAuth.AuthorizationServer.Middleware
     /// <summary>
     /// Handler inserted into OWIN pipeline to do the work.
     /// </summary>
-    public class InstagramAuthenticationHandler : AuthenticationHandler<DummyAuthenticationOptions>
+    public class DummyAuthenticationHandler : AuthenticationHandler<DummyAuthenticationOptions>
     {
         #region Methods
 
@@ -43,6 +43,7 @@ namespace OAuth.AuthorizationServer.Middleware
             var stateString = Options.StateDataFormat.Protect(state);
             Response.Redirect(WebUtilities.AddQueryString(Options.CallbackPath.Value, "state", stateString));
             return Task.FromResult<object>(null);
+            
         }
 
         /// <summary>

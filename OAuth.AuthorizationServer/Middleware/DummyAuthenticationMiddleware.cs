@@ -35,7 +35,7 @@ namespace OAuth.AuthorizationServer.Middleware
         /// </summary>
         protected override AuthenticationHandler<DummyAuthenticationOptions> CreateHandler()
         {
-            return new InstagramAuthenticationHandler();
+            return new DummyAuthenticationHandler();
         }
 
         #endregion Methods

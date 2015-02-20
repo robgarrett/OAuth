@@ -72,6 +72,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Middleware\AuthenticationExtensions.cs" />
+    <Compile Include="Middleware\BasicAuthenticationHandler.cs" />
+    <Compile Include="Middleware\BasicAuthenticationMiddleware.cs" />
+    <Compile Include="Middleware\BasicAuthenticationOptions.cs" />
     <Compile Include="Middleware\DummyAuthenticationHandler.cs" />
     <Compile Include="Middleware\DummyAuthenticationMiddleware.cs" />
     <Compile Include="Middleware\DummyAuthenticationOptions.cs" />
