@@ -73,10 +73,7 @@ namespace OAuth.AuthorizationServer
 
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
             //app.UseDummyAuthentication(new DummyAuthenticationOptions("rgarrett") { AuthenticationType = AuthTypes.DefaultAuthType });
-            app.UseBasicAuthentication(new BasicAuthenticationOptions(AuthTypes.DefaultAuthType)
-            {
-                ValidateCredentials = (u, p) => true
-            });
+            app.UseWindowsAuthentication(new WindowsAuthenticationOptions(AuthTypes.DefaultAuthType));
         }
 
         /// <summary>

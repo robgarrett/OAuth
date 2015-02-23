@@ -1,0 +1,3 @@
+[submodule "NTLM"]
+	path = NTLM
+	url = git@github.com:robgarrett/Nancy.Authentication.Ntlm.git

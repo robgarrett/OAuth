@@ -78,6 +78,9 @@
     <Compile Include="Middleware\DummyAuthenticationHandler.cs" />
     <Compile Include="Middleware\DummyAuthenticationMiddleware.cs" />
     <Compile Include="Middleware\DummyAuthenticationOptions.cs" />
+    <Compile Include="Middleware\WindowsAuthenticationHandler.cs" />
+    <Compile Include="Middleware\WindowsAuthenticationMiddleware.cs" />
+    <Compile Include="Middleware\WindowsAuthenticationOptions.cs" />
     <Compile Include="Migrations\201502191704055_Init.cs" />
     <Compile Include="Migrations\201502191704055_Init.Designer.cs">
       <DependentUpon>201502191704055_Init.cs</DependentUpon>
@@ -223,6 +226,10 @@
     <ProjectReference Include="..\OAuth.Constants\OAuth.Constants.csproj">
       <Project>{03af6c3c-5a5a-43a5-985e-0ff1f4c24b64}</Project>
       <Name>OAuth.Constants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OAuth.NTLM\OAuth.NTLM.csproj">
+      <Project>{af16abc0-2629-4c7a-bc2c-f68ab0108d93}</Project>
+      <Name>OAuth.NTLM</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

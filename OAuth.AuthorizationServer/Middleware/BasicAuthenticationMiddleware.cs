@@ -9,9 +9,9 @@ namespace OAuth.AuthorizationServer.Middleware
     /// </summary>
     public class BasicAuthenticationMiddleware : AuthenticationMiddleware<BasicAuthenticationOptions>
     {
-         #region Construction
+        #region Construction
 
-        public BasicAuthenticationMiddleware(OwinMiddleware next, IAppBuilder app, BasicAuthenticationOptions options) : 
+        public BasicAuthenticationMiddleware(OwinMiddleware next, IAppBuilder app, BasicAuthenticationOptions options) :
             base(next, options)
         {
         }
