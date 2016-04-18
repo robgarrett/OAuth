@@ -72,8 +72,7 @@ namespace OAuth.AuthorizationServer
             });
 
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-            //app.UseDummyAuthentication(new DummyAuthenticationOptions("rgarrett") { AuthenticationType = AuthTypes.DefaultAuthType });
-            app.UseWindowsAuthentication(new WindowsAuthenticationOptions(AuthTypes.DefaultAuthType));
+            app.UseDummyAuthentication(new DummyAuthenticationOptions("rgarrett") { AuthenticationType = AuthTypes.DefaultAuthType });
         }
 
         /// <summary>

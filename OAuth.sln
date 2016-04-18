@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth.AuthorizationServer", "OAuth.AuthorizationServer\OAuth.AuthorizationServer.csproj", "{5FB87C76-78A8-4C77-A7FB-7616B8BCBD9E}"
 EndProject
@@ -12,8 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth.Constants", "OAuth.Constants\OAuth.Constants.csproj", "{03AF6C3C-5A5A-43A5-985E-0FF1F4C24B64}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{7FB299A2-1B79-4D8B-8F68-6C324C928D35}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuth.NTLM", "OAuth.NTLM\OAuth.NTLM.csproj", "{AF16ABC0-2629-4C7A-BC2C-F68AB0108D93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +35,6 @@ Global
 		{03AF6C3C-5A5A-43A5-985E-0FF1F4C24B64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03AF6C3C-5A5A-43A5-985E-0FF1F4C24B64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03AF6C3C-5A5A-43A5-985E-0FF1F4C24B64}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AF16ABC0-2629-4C7A-BC2C-F68AB0108D93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF16ABC0-2629-4C7A-BC2C-F68AB0108D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF16ABC0-2629-4C7A-BC2C-F68AB0108D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF16ABC0-2629-4C7A-BC2C-F68AB0108D93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

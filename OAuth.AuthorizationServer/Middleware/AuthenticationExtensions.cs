@@ -24,15 +24,5 @@ namespace OAuth.AuthorizationServer.Middleware
             if (null == options) throw new ArgumentNullException("options");
             return app.Use(typeof(BasicAuthenticationMiddleware), app, options);
         }
-
-        /// <summary>
-        /// Create new instance of WindowsAuthenticationMiddleware.
-        /// </summary>
-        public static IAppBuilder UseWindowsAuthentication(this IAppBuilder app, WindowsAuthenticationOptions options)
-        {
-            if (null == app) throw new ArgumentNullException("app");
-            if (null == options) throw new ArgumentNullException("options");
-            return app.Use(typeof(WindowsAuthenticationMiddleware), app, options);
-        }
     }
 }
