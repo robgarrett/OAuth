@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SkypeTest", ".", "{866C1A17-A5AC-4438-AC74-A6BA5DE65A40}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_54090"
+		Debug.AspNetCompiler.PhysicalPath = "..\SkypeTest\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54090\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_54090"
+		Release.AspNetCompiler.PhysicalPath = "..\SkypeTest\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54090\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "54090"
+		SlnRelativePath = "..\SkypeTest\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{866C1A17-A5AC-4438-AC74-A6BA5DE65A40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{866C1A17-A5AC-4438-AC74-A6BA5DE65A40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58CB5B50-5988-4DDD-AE0A-BEC3A04C8608}
+	EndGlobalSection
+EndGlobal

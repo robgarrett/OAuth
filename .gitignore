@@ -4,8 +4,17 @@
 # User-specific files
 *.suo
 *.user
+<<<<<<< HEAD
 *.sln.docstates
 
+=======
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+>>>>>>> master-holder
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -13,6 +22,7 @@
 [Rr]eleases/
 x64/
 x86/
+<<<<<<< HEAD
 build/
 bld/
 [Bb]in/
@@ -20,12 +30,27 @@ bld/
 
 # Roslyn cache directories
 *.ide/
+=======
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# Visual Studio 2015 cache/options directory
+.vs/
+# Uncomment if you have tasks that create the project's static files in wwwroot
+#wwwroot/
+>>>>>>> master-holder
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+<<<<<<< HEAD
 #NUNIT
+=======
+# NUNIT
+>>>>>>> master-holder
 *.VisualState.xml
 TestResult.xml
 
@@ -34,6 +59,14 @@ TestResult.xml
 [Rr]eleasePS/
 dlldata.c
 
+<<<<<<< HEAD
+=======
+# DNX
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+>>>>>>> master-holder
 *_i.c
 *_p.c
 *_i.h
@@ -66,14 +99,27 @@ _Chutzpah*
 ipch/
 *.aps
 *.ncb
+<<<<<<< HEAD
 *.opensdf
 *.sdf
 *.cachefile
+=======
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+>>>>>>> master-holder
 
 # Visual Studio profiler
 *.psess
 *.vsp
 *.vspx
+<<<<<<< HEAD
+=======
+*.sap
+>>>>>>> master-holder
 
 # TFS 2012 Local Workspace
 $tf/
@@ -86,7 +132,11 @@ _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
 
+<<<<<<< HEAD
 # JustCode is a .NET coding addin-in
+=======
+# JustCode is a .NET coding add-in
+>>>>>>> master-holder
 .JustCode
 
 # TeamCity is a build add-in
@@ -98,6 +148,10 @@ _TeamCity*
 # NCrunch
 _NCrunch_*
 .*crunch*.local.xml
+<<<<<<< HEAD
+=======
+nCrunchTemp_*
+>>>>>>> master-holder
 
 # MightyMoose
 *.mm.*
@@ -125,17 +179,31 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
+<<<<<<< HEAD
 # TODO: Comment the next line if you want to checkin your web deploy settings 
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
 
+=======
+# TODO: Comment the next line if you want to checkin your web deploy settings
+# but database connection strings (with potential passwords) will be unencrypted
+#*.pubxml
+*.publishproj
+
+# Microsoft Azure Web App publish settings. Comment the next line if you want to
+# checkin your Azure Web App publish settings, but sensitive information contained
+# in these scripts will be unencrypted
+PublishScripts/
+
+>>>>>>> master-holder
 # NuGet Packages
 *.nupkg
 # The packages folder can be ignored because of Package Restore
 **/packages/*
 # except build/, which is used as an MSBuild target.
 !**/packages/build/
+<<<<<<< HEAD
 # If using the old MSBuild-Integrated Package Restore, uncomment this:
 #!**/packages/repositories.config
 
@@ -151,13 +219,55 @@ sql/
 *.Cache
 ClientBin/
 [Ss]tyle[Cc]op.*
+=======
+# Uncomment if necessary however generally it will be regenerated when needed
+#!**/packages/repositories.config
+# NuGet v3's project.json files produces more ignoreable files
+*.nuget.props
+*.nuget.targets
+
+# Microsoft Azure Build Output
+csx/
+*.build.csdef
+
+# Microsoft Azure Emulator
+ecf/
+rcf/
+
+# Windows Store app package directories and files
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+
+# Visual Studio cache files
+# files ending in .cache can be ignored
+*.[Cc]ache
+# but keep track of directories ending in .cache
+!*.[Cc]ache/
+
+# Others
+ClientBin/
+>>>>>>> master-holder
 ~$*
 *~
 *.dbmdl
 *.dbproj.schemaview
+<<<<<<< HEAD
 *.pfx
 *.publishsettings
 node_modules/
+=======
+*.jfm
+*.pfx
+*.publishsettings
+node_modules/
+orleans.codegen.cs
+
+# Since there are multiple workflows, uncomment next line to ignore bower_components
+# (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
+#bower_components/
+>>>>>>> master-holder
 
 # RIA/Silverlight projects
 Generated_Code/
@@ -181,3 +291,44 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+<<<<<<< HEAD
+=======
+
+# GhostDoc plugin setting file
+*.GhostDoc.xml
+
+# Node.js Tools for Visual Studio
+.ntvs_analysis.dat
+
+# Visual Studio 6 build log
+*.plg
+
+# Visual Studio 6 workspace options file
+*.opt
+
+# Visual Studio LightSwitch build output
+**/*.HTMLClient/GeneratedArtifacts
+**/*.DesktopClient/GeneratedArtifacts
+**/*.DesktopClient/ModelManifest.xml
+**/*.Server/GeneratedArtifacts
+**/*.Server/ModelManifest.xml
+_Pvt_Extensions
+
+# Paket dependency manager
+.paket/paket.exe
+paket-files/
+
+# FAKE - F# Make
+.fake/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# CodeRush
+.cr/
+
+# Python Tools for Visual Studio (PTVS)
+__pycache__/
+*.pyc
+>>>>>>> master-holder
