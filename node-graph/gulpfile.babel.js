@@ -6,6 +6,7 @@ import tsc from "gulp-typescript";
 import { exec } from "child_process";
 import tslint from "gulp-tslint";
 import clean from "gulp-clean";
+import rename from "gulp-rename";
 import mocha from "gulp-mocha";
 import sourcemaps from "gulp-sourcemaps";
 import browserSync from "browser-sync";
@@ -47,6 +48,11 @@ gulp.task("lint", function doWork() {
 });
 
 // ** Compilation ** //
+gulp.task("preprocess", function doWork(done) {
+  return gulp.src("src/app/config-sample.ts").
+    pipe(rename("config.ts")).
+    pipe(gulp.dest("src/app", { overwrite: false }))
+});
 gulp.task("compile:typescript", function doWork() {
   var project = tsc.createProject("tsconfig.json", { declaration: true });
   var built = gulp.src(paths.tscripts.srcFiles)
@@ -57,7 +63,7 @@ gulp.task("compile:typescript", function doWork() {
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.tscripts.destDir));
 });
-gulp.task("build", gulp.series("clean", "lint", "compile:typescript"));
+gulp.task("build", gulp.series("clean", "lint", "preprocess", "compile:typescript"));
 
 // ** Serve **
 gulp.task("serveSrc", function doWork(done) {

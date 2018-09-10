@@ -54,3 +54,6 @@ lib/*
 # Webpack files
 dist/*
 
+# Sensitive config data.
+src/app/config.ts
+
