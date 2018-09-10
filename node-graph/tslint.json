@@ -6,7 +6,7 @@
       true,
       "check-space"
     ],
-    "no-any":true,
+    "no-any":false,
     "curly": false,
     "eofline": true,
     "forin": true,
