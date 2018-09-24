@@ -6,22 +6,19 @@ import * as webpackMiddleware from "webpack-dev-middleware";
 
 const paths = {
   webpackConfig: path.resolve(__dirname, "../../webpack.config.dev"),
-  entryPoint: path.resolve(__dirname, "../src/index.html"),
 };
 
 const port = 3000;
 const app = express();
 const compiler = webpack(require(paths.webpackConfig));
 
-// Use web pack compiler to bundle.
+// Use web pack compiler to bundle and serve content.
 app.use(webpackMiddleware(compiler, {
-   publicPath: require(paths.webpackConfig).output.publicPath,
+  publicPath: require(paths.webpackConfig).output.publicPath,
 }));
 
-app.get("/", function(req, res) {
-  res.sendFile(paths.entryPoint);
-});
-
-app.listen(port, function(err) {
+// Start express.
+app.listen(port, function (err) {
+  console.log(`Express listening on port ${port}`);
   if (err) { console.log(err); }
 });

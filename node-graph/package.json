@@ -42,6 +42,7 @@
     "gulp-exec": "^3.0.2",
     "gulp-flatten": "^0.4.0",
     "gulp-mocha": "^6.0.0",
+    "gulp-nodemon": "^2.2.1",
     "gulp-rename": "^1.4.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-tslint": "^8.1.3",

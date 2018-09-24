@@ -28,6 +28,9 @@ module.exports = {
       inject: true,
     }),
   ],
+  node: {
+    console: false
+  },
   module: {
     rules: [
       // Use ts-loader to transpile TS when called from express.
