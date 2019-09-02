@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Demo-CoreMVC-OAUTH</h1>
+    <p class="lead">Demonstration of OAUTH process from ASP.NET Core MVC.</p>
+</div>
+
+@using (Html.BeginForm("ProcessForm", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Azure</h2>
+            <p><input type="submit" name="submit" value="Azure" class="btn btn-light"/></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <p>@ViewData["AccessToken"]</p>
+        </div>
+    </div>
+}
