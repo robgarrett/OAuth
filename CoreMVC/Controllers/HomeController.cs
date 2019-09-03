@@ -2,6 +2,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace CoreMVC.Controllers
 {
@@ -33,11 +34,10 @@ namespace CoreMVC.Controllers
                 };
                 var response = OAuth2.AuthenticateByCode(provider, Request.UrlHome(), code);
                 if (null == response) throw new Exception("Null response from OAUTH provider.");
-                // Get the access token details.
-                if (!string.IsNullOrEmpty(response.IDToken))
-                    ViewBag.AccessToken = response.IDToken;
+                if (OAuth2.ValidateTokens(response))
+                    ViewBag.Response = JsonConvert.SerializeObject(response, Formatting.None);
                 else
-                    ViewBag.AccessToken = response.AccessToken;
+                    ViewBag.Response = "{ \"error\": \"Response failed validation\" }";
             }
             return View();
         }

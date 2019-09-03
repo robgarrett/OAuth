@@ -85,14 +85,14 @@ namespace CoreMVC
             }
         }
 
-        /// <summary>
-        /// Get the Uri for the given provider to obtain the access code.
-        /// </summary>
-        /// <param name="provider">Provider details.</param>
-        /// <param name="redirectUri">Redirect Uri that the provider calls.</param>
-        /// <param name="locale">Locale</param>
-        /// <returns>Uri to call for the provider.</returns>
-        public static Uri CreateRedirect(OAuth2Provider provider, Uri redirectUri, string locale = "en")
+        public static Uri CreateRedirect(OAuth2Provider provider, Uri redirectUri)
+        {
+            string qs;
+            var url = CreateRedirect(provider, redirectUri, out qs);
+            return new Uri($"{provider.AuthUri}?{qs}");
+        }
+
+        public static Uri CreateRedirect(OAuth2Provider provider, Uri redirectUri, out string postPayload)
         {
             if (null == provider) throw new ArgumentNullException(nameof(provider));
             if (null == redirectUri) throw new ArgumentNullException(nameof(redirectUri));
@@ -101,10 +101,9 @@ namespace CoreMVC
             var parameters = new Dictionary<string, string>
             {
                 { "client_id", provider.ClientId},
-                // { "display", "page" },
-                // { "locale", locale },
                 { "redirectUri", redirectUri.ToString() },
-                { "response_type", "code" }
+                { "response_type", "code" },
+                { "prompt", "consent" }
             };
             if (provider.Offline)
                 parameters.Add("access_type", "offline");
@@ -112,17 +111,10 @@ namespace CoreMVC
                 parameters.Add("scope", provider.Scope);
             if (!string.IsNullOrWhiteSpace(provider.State))
                 parameters.Add("state", provider.State);
-            var qs = BuildQueryString(parameters);
-            return new Uri($"{provider.AuthUri}?{qs}");
+            postPayload = BuildQueryString(parameters);
+            return provider.AuthUri;
         }
 
-        /// <summary>
-        /// Get the OAuth access token with a given OAuth code.
-        /// </summary>
-        /// <param name="provider">Provider.</param>
-        /// <param name="redirectUri">Redirect Uri that provider calls.</param>
-        /// <param name="code">OAuth code.</param>
-        /// <returns>Access token details.</returns>
         public static OAuth2AuthenticationResponse AuthenticateByCode(OAuth2Provider provider, Uri redirectUri, string code)
         {
             if (null == provider) throw new ArgumentNullException(nameof(provider));
@@ -148,12 +140,6 @@ namespace CoreMVC
             return OAuth2AuthenticationResponse.Parse(reply);
         }
 
-        /// <summary>
-        /// Authenticate by getting a new access token given a refresh token.
-        /// </summary>
-        /// <param name="provider">Provider.</param>
-        /// <param name="refreshToken">Refresh token.</param>
-        /// <returns>Access token details.</returns>
         public static OAuth2AuthenticationResponse AuthenticateByToken(OAuth2Provider provider, string refreshToken)
         {
             if (null == provider) throw new ArgumentNullException(nameof(provider));
@@ -175,6 +161,19 @@ namespace CoreMVC
             // POST to server.
             var reply = Request(provider.AccessTokenUri, payload: BuildQueryString(parameters));
             return OAuth2AuthenticationResponse.Parse(reply);
+        }
+
+        public static bool ValidateTokens(OAuth2AuthenticationResponse response)
+        {
+            if (null == response) throw new ArgumentNullException(nameof(response));
+            try
+            {
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static string GetUserDetails(OAuth2Provider provider, string accessToken)

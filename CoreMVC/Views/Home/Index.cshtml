@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    //ViewBag.Response = "{a:1, 'b':'foo', c:[false,'false',null, 'null', {d:{e:1.3e5,f:'1.3e5'}}]};";
 }
 
 <div class="jumbotron">
@@ -17,8 +18,13 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
-            <p>@ViewData["AccessToken"]</p>
+        <div class="col-md-12" id="json">
+            
         </div>
     </div>
 }
+
+<script type="text/javascript">
+    var json = @Html.Raw(@ViewBag.Response);
+    output("json", syntaxHighlight(json));
+</script>
