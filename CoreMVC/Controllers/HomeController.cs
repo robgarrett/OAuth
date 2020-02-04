@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +14,10 @@ namespace CoreMVC.Controllers
         public HomeController(IConfiguration config)
         {
             config.GetSection("AzureAD").Bind(_settings = new AppSettings());
-            _settings.Authority = _settings.Authority.Replace("{tenantId}", _settings.TenantId.ToString());
+            var tenantId = _settings.TenantId.ToString();
+            _settings.Authority = _settings.Authority.Replace(@"{TenantId}", tenantId, true, CultureInfo.CurrentCulture);
+            _settings.AuthUrl = _settings.AuthUrl.Replace(@"{TenantId}", tenantId, true, CultureInfo.CurrentCulture);
+            _settings.TokenUrl = _settings.TokenUrl.Replace(@"{TenantId}", tenantId, true, CultureInfo.CurrentCulture);
         }
 
         public IActionResult Index()
@@ -27,12 +31,13 @@ namespace CoreMVC.Controllers
             {
                 var provider = new OAuth2.OAuth2Provider()
                 {
-                    ClientId = _settings.ClientId.ToString(),
-                    ClientSecret = _settings.ClientSecret,
-                    AccessTokenUri = new Uri($"{_settings.Authority}/token"),
+                    ClientId = _settings.ClientId,
+                    Authority = _settings.Authority,
+                    CertSubjectName = _settings.CertSubjectName,
+                    AccessTokenUri = new Uri(_settings.TokenUrl),
                     State = "AzureAd"
                 };
-                var response = OAuth2.AuthenticateByCode(provider, Request.UrlHome(), code);
+                var response = OAuth2.AuthenticateByCode(provider, _settings.RedirectUri, code);
                 if (null == response) throw new Exception("Null response from OAUTH provider.");
                 if (OAuth2.ValidateTokens(response))
                     ViewBag.Response = JsonConvert.SerializeObject(response, Formatting.None);
@@ -51,13 +56,14 @@ namespace CoreMVC.Controllers
                 // Get an access code.
                 var provider = new OAuth2.OAuth2Provider()
                 {
-                    ClientId = _settings.ClientId.ToString(),
-                    ClientSecret = _settings.ClientSecret,
-                    AuthUri = new Uri($"{_settings.Authority}/authorize"),
+                    ClientId = _settings.ClientId,
+                    Authority = _settings.Authority,
+                    CertSubjectName = _settings.CertSubjectName,
+                    AuthUri = new Uri(_settings.AuthUrl),
                     Scope = CreateScopesString(),
                     State = "AzureAd"
                 };
-                var url = OAuth2.CreateRedirect(provider, Request.UrlHome());
+                var url = OAuth2.CreateRedirect(provider, _settings.RedirectUri);
                 return Redirect(url.ToString());
             }
             return View("Index");

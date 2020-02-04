@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Web;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace CoreMVC
@@ -13,8 +18,9 @@ namespace CoreMVC
     {
         public class OAuth2Provider
         {
-            public string ClientId { get; set; }
-            public string ClientSecret { get; set; }
+            public Guid ClientId { get; set; }
+            public string CertSubjectName { get; set; }
+            public string Authority { get; set; }
             public Uri AuthUri { get; set; }
             public Uri AccessTokenUri { get; set; }
             public Uri UserInfoUri { get; set; }
@@ -97,13 +103,13 @@ namespace CoreMVC
             if (null == provider) throw new ArgumentNullException(nameof(provider));
             if (null == redirectUri) throw new ArgumentNullException(nameof(redirectUri));
             if (null == provider.AuthUri) throw new ArgumentException("Authorization Uri is blank");
-            if (string.IsNullOrEmpty(provider.ClientId)) throw new ArgumentException("Client Id is blank");
+            if (null == provider.ClientId) throw new ArgumentException("Client Id is blank");
             var parameters = new Dictionary<string, string>
             {
-                { "client_id", provider.ClientId},
-                { "redirectUri", redirectUri.ToString() },
-                { "response_type", "code" },
-                { "prompt", "consent" }
+                { "client_id", provider.ClientId.ToString()},
+                { "redirect_uri", redirectUri.ToString() },
+                { "response_mode", "query" },
+                { "response_type", "code" }
             };
             if (provider.Offline)
                 parameters.Add("access_type", "offline");
@@ -120,15 +126,23 @@ namespace CoreMVC
             if (null == provider) throw new ArgumentNullException(nameof(provider));
             if (null == redirectUri) throw new ArgumentNullException(nameof(redirectUri));
             if (string.IsNullOrEmpty(code)) throw new ArgumentNullException(nameof(code));
-            if (string.IsNullOrEmpty(provider.ClientId)) throw new ArgumentException("Client Id is blank");
-            if (string.IsNullOrWhiteSpace(provider.ClientSecret)) throw new ArgumentException("Client secret is blank");
+            if (null == provider.ClientId) throw new ArgumentException("Client Id is blank");
+            if (string.IsNullOrWhiteSpace(provider.CertSubjectName)) throw new ArgumentException("Cert Subject name is blank");
             if (null == provider.AccessTokenUri) throw new ArgumentException("Access Token Uri is blank");
+            if (string.IsNullOrEmpty(provider.Authority)) throw new ArgumentException("Authority is blank");
+            // Get the cert to create our JWT.
+            var cert = ReadCertFromStore(provider.CertSubjectName);
+            if (null == cert) throw new CryptographicException($"Cannot find cert with {provider.CertSubjectName} in the local machine personal store.");
+            // Create the JWT to send.
+            var jwt = CreateClientAuthJwt(provider, cert);
+            // Post.
             var parameters = new Dictionary<string, string>
             {
-                {"client_id", provider.ClientId},
-                { "client_secret", provider.ClientSecret },
+                { "client_id", provider.ClientId.ToString()},
+                { "client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer" },
+                { "client_assertion", jwt },
                 { "code", code },
-                { "redirectUri", redirectUri.ToString() },
+                { "redirect_uri", redirectUri.ToString() },
                 { "grant_type", "authorization_code" }
             };
             if (!string.IsNullOrWhiteSpace(provider.Scope))
@@ -144,13 +158,20 @@ namespace CoreMVC
         {
             if (null == provider) throw new ArgumentNullException(nameof(provider));
             if (string.IsNullOrEmpty(refreshToken)) throw new ArgumentNullException(nameof(refreshToken));
-            if (string.IsNullOrEmpty(provider.ClientId)) throw new ArgumentException("Client Id is blank");
-            if (string.IsNullOrWhiteSpace(provider.ClientSecret)) throw new ArgumentException("Client secret is blank");
+            if (null == provider.ClientId) throw new ArgumentException("Client Id is blank");
+            if (string.IsNullOrWhiteSpace(provider.CertSubjectName)) throw new ArgumentException("Cert Subject name is blank");
             if (null == provider.AccessTokenUri) throw new ArgumentException("Access Token Uri is blank");
+            if (string.IsNullOrEmpty(provider.Authority)) throw new ArgumentException("Authority is blank");
+            // Get the cert to create our JWT.
+            var cert = ReadCertFromStore(provider.CertSubjectName);
+            if (null == cert) throw new CryptographicException($"Cannot find cert with {provider.CertSubjectName} in the local machine personal store.");
+            // Create the JWT to send.
+            var jwt = CreateClientAuthJwt(provider, cert);
             var parameters = new Dictionary<string, string>
             {
-                {"client_id", provider.ClientId},
-                { "client_secret", provider.ClientSecret },
+                { "client_id", provider.ClientId.ToString()},
+                { "client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer" },
+                { "client_assertion", jwt },
                 { "refresh_token", refreshToken },
                 { "grant_type", "refresh_token" }
             };
@@ -228,7 +249,40 @@ namespace CoreMVC
         private static string BuildQueryString(IDictionary<string, string> parameters)
         {
             if (null == parameters) throw new ArgumentNullException(nameof(parameters));
-            return parameters.Aggregate("", (c, p) => $"{c}&{p.Key}={HttpUtility.UrlEncode(p.Value)}").Substring(1);
+            return parameters.Aggregate("", (c, p) => $"{c}&{p.Key}={HttpUtility.UrlEncode(p.Value).Replace("+", "%20")}").Substring(1);
+        }
+
+        private static string CreateClientAuthJwt(OAuth2Provider provider, X509Certificate2 cert)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler { TokenLifetimeInMinutes = 5 };
+            var securityToken = tokenHandler.CreateJwtSecurityToken(
+                // iss must be the client_id of our application
+                issuer: provider.ClientId.ToString(),
+                // aud must be the identity provider (token endpoint)
+                audience: provider.Authority,
+                // sub must be the client_id of our application
+                subject: new ClaimsIdentity(new List<Claim> { new Claim("sub", provider.ClientId.ToString()) }),
+                // sign with the private key (using RS256 for IdentityServer)
+                signingCredentials: new SigningCredentials(new X509SecurityKey(cert), SecurityAlgorithms.RsaSha256)
+            );
+            return tokenHandler.WriteToken(securityToken);
+        }
+
+        private static X509Certificate2 ReadCertFromStore(string certName)
+        {
+            X509Certificate2 cert = null;
+            using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
+            {
+                store.Open(OpenFlags.ReadOnly);
+                var certCollection = store.Certificates;
+                // Look for unexpired certs.
+                var currentCerts = certCollection.Find(X509FindType.FindByTimeValid, DateTime.Now, false);
+                // Match the subject name.
+                var signingCert = currentCerts.Find(X509FindType.FindBySubjectDistinguishedName, certName, false);
+                cert = signingCert.OfType<X509Certificate2>().OrderByDescending(c => c.NotBefore).FirstOrDefault();
+                store.Close();
+                return cert;
+            }
         }
     }
 }
