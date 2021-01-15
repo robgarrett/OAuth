@@ -1,0 +1,38 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "clean",
+            "command": "gulp clean",
+            "type": "shell",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build",
+            "command": "gulp build",
+            "type": "shell",
+            "dependsOn": "clean",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "gulp publish",
+            "type": "shell",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "type": "func",
+            "dependsOn": "build",
+            "options": {
+                "cwd": "${workspaceFolder}/bin/Debug/netcoreapp3.1"
+            },
+            "command": "host start",
+            "isBackground": true,
+            "problemMatcher": "$func-watch"
+        }
+    ]
+}
